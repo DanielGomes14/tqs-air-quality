@@ -1,9 +1,13 @@
 package tqs.airquality.models;
 
+import lombok.Data;
+
+@Data
 public class Particles {
     private int aqi;
     private double o3;
     private double so2;
+    private double no2;
     private double co;
     private double pm25;
     private double pm10;
