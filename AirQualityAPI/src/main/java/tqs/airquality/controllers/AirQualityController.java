@@ -20,6 +20,7 @@ public class AirQualityController {
     @Autowired
     private WeatherBitAPIService service;
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/current_quality")
     public ResponseEntity<?> getAirQuality(
             @RequestParam String city_name
