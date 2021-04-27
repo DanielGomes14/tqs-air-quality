@@ -21,7 +21,6 @@ public class BasicHttpClient implements IHttpClient {
             HttpEntity entity = response.getEntity();
             return EntityUtils.toString(entity);
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }

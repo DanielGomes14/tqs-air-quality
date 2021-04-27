@@ -19,33 +19,43 @@ import java.util.Optional;
 public class WeatherBitAPIService {
     @Value("${weatherbit_token}")
     private String weatherbittoken;
-    private final Cache cache = new Cache();
+
+    private  final Cache cache = new Cache() ;
 
     @Autowired
     private BasicHttpClient basicHttpClient;
 
-    public String buildURI(String city) throws URISyntaxException {
+
+
+    public String buildURI(String city, String countrycode) throws URISyntaxException {
         var uriBuilder =  new URIBuilder("https://api.weatherbit.io/v2.0/current/airquality");
         if(city != null){
             uriBuilder.addParameter("city", city);
+        }
+        if(countrycode != null){
+            uriBuilder.addParameter("country", countrycode);
         }
         uriBuilder.addParameter("key","b425cc3001644d4bb6d9af3e4234d750");
         return uriBuilder.build().toString();
     }
 
-    public Optional<AirQualityData> fetchAPIDataByCityName(String cityName) throws URISyntaxException, IOException, ParseException {
-        var uriString =  buildURI(cityName);
+    public Optional<AirQualityData> fetchAPIDataByCityNameAndCountry(String cityName, String countrycode) throws URISyntaxException, IOException, ParseException {
+        var uriString =  buildURI(cityName,countrycode);
         String response = this.cache.get(uriString);
         if(response == null) {
             response = this.basicHttpClient.get(uriString);
-            cache.put(uriString,response);
+            System.out.println(response);
         }
         Optional<AirQualityData> data = Optional.empty();
         if(response != null){
+            cache.put(uriString,response);
             JSONObject obj = (JSONObject) new JSONParser().parse(response);
             data = Optional.of(new ObjectMapper().readValue(obj.toString(), AirQualityData.class));
         }
         return data;
+    }
+    public Cache getCacheObj(){
+        return cache;
     }
 
 

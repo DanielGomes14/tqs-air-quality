@@ -1,6 +1,5 @@
 package tqs.airquality.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.springframework.boot.test.context.SpringBootTest;
+
 import tqs.airquality.models.AirQualityData;
 import tqs.airquality.utils.URIHelper;
 
@@ -37,33 +36,49 @@ class WeatherBitAPIServiceTest {
 
     private static  final String API_TOKEN = "b425cc3001644d4bb6d9af3e4234d750";
     private static  final String CITY = "Mangualde";
-    private static  final String INVALID_CITY_NAME = "UmaCidadeInvalida";
+    private static  final String INVALID_CITY = "UmaCidadeInvalida";
+    private static final String COUNTRY ="PT";
+    private static final String INVALID_COUNTRY ="FFFFF";
 
     @BeforeEach
     void setUp() throws IOException, URISyntaxException {
         String json_res = createJsonResponse();
-        String final_url =  new URIHelper().buildURIWeatherBit(API_TOKEN,CITY).build().toString();
-        String wrong_url = new URIHelper().buildURIWeatherBit(API_TOKEN,INVALID_CITY_NAME).build().toString();
+        String final_url =  new URIHelper().buildURIWeatherBit(API_TOKEN,CITY,COUNTRY).build().toString();
+        String wrong_url = new URIHelper().buildURIWeatherBit(API_TOKEN,CITY,INVALID_COUNTRY).build().toString();
+        String wrong_url_2 = new URIHelper().buildURIWeatherBit(API_TOKEN,INVALID_CITY,COUNTRY).build().toString();
+        String wrong_url_3= new URIHelper().buildURIWeatherBit(API_TOKEN,INVALID_CITY,INVALID_COUNTRY).build().toString();
         when(httpClient.get(final_url)).thenReturn(json_res);
         when(httpClient.get(wrong_url)).thenReturn(null);
+        when(httpClient.get(wrong_url_2)).thenReturn(null);
+        when(httpClient.get(wrong_url_3)).thenReturn(null);
     }
 
     @Test
-    void whenGetQualityByCityName_thenReturnCorrectQualityData() throws IOException, URISyntaxException, ParseException {
+    void whenGetQualityByCityNameAndCountry_thenReturnCorrectQualityData() throws IOException, URISyntaxException, ParseException {
         String json_res = createJsonResponse();
         AirQualityData json_obj = new ObjectMapper().readValue(json_res, AirQualityData.class);
-        AirQualityData res_service = service.fetchAPIDataByCityName(CITY).orElse(null);
+        AirQualityData res_service = service.fetchAPIDataByCityNameAndCountry(CITY, COUNTRY).orElse(null);
         assertThat(res_service).isNotNull();
         assertThat(res_service.getCity_name(), is(json_obj.getCity_name()));
         assertThat(res_service,is(json_obj));
     }
     @Test
-    void whenGetQualityByBadCityName_thenReturnIncorrectData() throws IOException, URISyntaxException, ParseException {
+    void whenGetQualityByBadCityNameAndCountry_thenReturnIncorrectData() throws IOException, URISyntaxException, ParseException {
 
-        Optional<AirQualityData> res_service = service.fetchAPIDataByCityName(INVALID_CITY_NAME);
+        Optional<AirQualityData> res_service = service.fetchAPIDataByCityNameAndCountry(INVALID_CITY,COUNTRY);
         assertThat(res_service).isEmpty();
     }
 
+    @Test
+    void whenGetQualityByCityNameAndBadCountry_thenReturnIncorrectData() throws IOException, URISyntaxException, ParseException {
+        Optional<AirQualityData> res_service = service.fetchAPIDataByCityNameAndCountry(CITY,INVALID_COUNTRY);
+        assertThat(res_service).isEmpty();
+    }
+    @Test
+    void whenGetQualityByBadCityNameAndBadCountry_thenReturnIncorrectData() throws IOException, URISyntaxException, ParseException {
+        Optional<AirQualityData> res_service = service.fetchAPIDataByCityNameAndCountry(INVALID_CITY,INVALID_COUNTRY);
+        assertThat(res_service).isEmpty();
+    }
 
     String createJsonResponse(){
         return "{\"lat\":40.60425,\"lon\":-7.76115,\"timezone\":\"Europe/Lisbon\"," +

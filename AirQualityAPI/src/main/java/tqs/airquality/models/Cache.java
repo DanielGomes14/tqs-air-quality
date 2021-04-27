@@ -1,8 +1,12 @@
 package tqs.airquality.models;
 
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Cache {
 
@@ -62,8 +66,22 @@ public class Cache {
     public int getNumberRequests() {
         return numberRequests;
     }
+    @JsonIgnore
     public long getTimeToLive(){
         return timeToLive;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cache cache = (Cache) o;
+        return timeToLive == cache.timeToLive && numberRequests == cache.numberRequests && numberHits == cache.numberHits && numberMisses == cache.numberMisses && Objects.equals(cacheMap, cache.cacheMap);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(timeToLive, numberRequests, numberHits, numberMisses, cacheMap);
     }
 
     public static class CacheValue{
