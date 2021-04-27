@@ -16,20 +16,13 @@ public class BasicHttpClient implements IHttpClient {
     @Override
     public String get(String url) throws IOException {
         CloseableHttpClient client = HttpClients.createDefault();
-        HttpGet request = new HttpGet(url);
-        CloseableHttpResponse response = client.execute(request);
-        try {
+        var request = new HttpGet(url);
+        try (CloseableHttpResponse response = client.execute(request)) {
             HttpEntity entity = response.getEntity();
             return EntityUtils.toString(entity);
-        }
-        catch (Exception e ){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }
-        finally
-        {
-            if (response != null)
-                response.close();
         }
     }
 }

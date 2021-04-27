@@ -14,6 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.hamcrest.CoreMatchers.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import org.springframework.boot.test.context.SpringBootTest;
 import tqs.airquality.models.AirQualityData;
 import tqs.airquality.utils.URIHelper;
 
@@ -61,6 +63,8 @@ class WeatherBitAPIServiceTest {
         Optional<AirQualityData> res_service = service.fetchAPIDataByCityName(INVALID_CITY_NAME);
         assertThat(res_service).isEmpty();
     }
+
+
     String createJsonResponse(){
         return "{\"lat\":40.60425,\"lon\":-7.76115,\"timezone\":\"Europe/Lisbon\"," +
                 "\"city_name\":\"Mangualde\",\"country_code\":\"PT\",\"state_code\":\"22\"," +

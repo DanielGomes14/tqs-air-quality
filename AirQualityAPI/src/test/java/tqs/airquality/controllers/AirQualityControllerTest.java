@@ -30,8 +30,8 @@ class AirQualityControllerTest {
 
     private static final String CITY_NAME = "Mangualde";
     private static final String INVALID_CITY_NAME = "UmaCidadeInvalida";
-    private static final String CITY_ENDPOINT= String.format("/api/v1/current_quality?city_name=%s",CITY_NAME);
-    private static final String INVALID_CITY_ENDPOINT= String.format("/api/v1/current_quality?city_name=%s",INVALID_CITY_NAME);
+    private static final String CITY_ENDPOINT= String.format("/api/v1/current_quality?cityname=%s",CITY_NAME);
+    private static final String INVALID_CITY_ENDPOINT= String.format("/api/v1/current_quality?cityname=%s",INVALID_CITY_NAME);
 
     @Autowired
     private MockMvc mvc;
@@ -40,7 +40,7 @@ class AirQualityControllerTest {
     private WeatherBitAPIService service;
 
     @Test
-    public void whenGetQualityByCity_thenReturnQuality() throws Exception {
+    void whenGetQualityByCity_thenReturnQuality() throws Exception {
         String json_res = "{\"lat\":40.60425,\"lon\":-7.76115,\"timezone\":\"Europe/Lisbon\"," +
                 "\"city_name\":\"Mangualde\",\"country_code\":\"PT\",\"state_code\":\"22\"," +
                 "\"data\":[{\"aqi\":62,\"o3\":129.998,\"so2\":0.584871,\"no2\":0.532164,\"co\":305.831," +
@@ -65,7 +65,7 @@ class AirQualityControllerTest {
         verify(service, times(1)).fetchAPIDataByCityName(CITY_NAME);
     }
     @Test
-    public void when_BadCityName_thenReturnNotFound() throws Exception {
+    void when_BadCityName_thenReturnNotFound() throws Exception {
         when(service.fetchAPIDataByCityName(INVALID_CITY_NAME)).thenReturn(
             Optional.empty()
         );

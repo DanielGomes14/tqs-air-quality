@@ -22,14 +22,14 @@ public class AirQualityController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/current_quality")
-    public ResponseEntity<?> getAirQuality(
-            @RequestParam String city_name
+    public ResponseEntity<AirQualityData> getAirQuality(
+            @RequestParam String cityname
     ) throws URISyntaxException, IOException, ParseException {
-        if (city_name != null){
-            Optional<AirQualityData> data = service.fetchAPIDataByCityName(city_name);
-            if (data.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("City Name Invalid");
+        if (cityname != null){
+            Optional<AirQualityData> data = service.fetchAPIDataByCityName(cityname);
+            if(data.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-            return  ResponseEntity.status(HttpStatus.OK).body(data);
+            return  ResponseEntity.of(data);
 
         }
         return null;
