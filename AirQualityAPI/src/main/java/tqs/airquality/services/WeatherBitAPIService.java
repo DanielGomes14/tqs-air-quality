@@ -30,10 +30,11 @@ public class WeatherBitAPIService {
     public String buildURI(String city, String countrycode) throws URISyntaxException {
         var uriBuilder =  new URIBuilder("https://api.weatherbit.io/v2.0/current/airquality");
         if(city != null){
-            uriBuilder.addParameter("city", city);
+            uriBuilder.addParameter("city", city.trim());
         }
         if(countrycode != null){
-            uriBuilder.addParameter("country", countrycode);
+
+            uriBuilder.addParameter("country", countrycode.trim());
         }
         uriBuilder.addParameter("key","b425cc3001644d4bb6d9af3e4234d750");
         return uriBuilder.build().toString();
@@ -44,7 +45,6 @@ public class WeatherBitAPIService {
         String response = this.cache.get(uriString);
         if(response == null) {
             response = this.basicHttpClient.get(uriString);
-            System.out.println(response);
         }
         Optional<AirQualityData> data = Optional.empty();
         if(response != null){

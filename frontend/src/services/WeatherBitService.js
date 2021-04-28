@@ -14,7 +14,6 @@ class WeatherBitService{
             }
             console.log(country_code)
             if (country_code != null && country_code.trim().length > 0){
-                alert("entrei")
                 url+='&countrycode=' + country_code
             }
             alert(url)
