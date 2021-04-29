@@ -1,36 +1,27 @@
 package tqs.airquality.controllers;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.simple.parser.ParseException;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import tqs.airquality.models.AirQualityData;
-import tqs.airquality.services.WeatherBitAPIService;
 
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.Optional;
-
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.Matchers.hasSize;
-
-
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-
-@WebMvcTest(AirQualityController.class)
-class AirQualityControllerTest {
+@SpringBootTest(webEnvironment =  SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+class AirQualityControllerIT {
 
     private static final String CITY_NAME = "Mangualde";
     private static final String INVALID_CITY_NAME = "UmaCidadeInvalida";
@@ -47,20 +38,13 @@ class AirQualityControllerTest {
     private static final String INVALID_CITY_ENDPOINT= String.format(
             "%s?cityname=%s&countrycode=%s",BASE_QUALITY_URI,INVALID_CITY_NAME,COUNTRY_CODE);
 
-
     @Autowired
     private MockMvc mvc;
 
-    @MockBean
-    private WeatherBitAPIService service;
-
     @Test
-    void whenGetQualityByCityAndCountry_thenReturnQuality() throws Exception {
+    void whenGetQualityByCityNameAndCountry_thenReturnQuality() throws Exception {
         String json_res = createJsonResponse();
         AirQualityData json_obj = new ObjectMapper().readValue(json_res, AirQualityData.class);
-        when(service.fetchAPIDataByCityNameAndCountry(CITY_NAME,COUNTRY_CODE)).thenReturn(
-                Optional.of(json_obj)
-        );
         mvc.perform(get(CITY_ENDPOINT).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -71,40 +55,49 @@ class AirQualityControllerTest {
                 .andExpect(jsonPath("$.country_code", is(json_obj.getCountry_code())))
                 .andExpect(jsonPath("$.timezone", is(json_obj.getTimezone())))
                 .andExpect(jsonPath("$.data", hasSize(equalTo(1))));
-
-        verify(service, times(1)).fetchAPIDataByCityNameAndCountry(CITY_NAME,COUNTRY_CODE);
     }
+
     @Test
     void when_BadCityName_thenReturnNotFound() throws Exception {
-        when(service.fetchAPIDataByCityNameAndCountry(INVALID_CITY_NAME,COUNTRY_CODE)).thenReturn(
-            Optional.empty()
-        );
         mvc.perform(get(INVALID_CITY_ENDPOINT).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound());
-        verify(service, times(1)).fetchAPIDataByCityNameAndCountry(INVALID_CITY_NAME,COUNTRY_CODE);
     }
 
     @Test
     void whenBadCountry_thenReturnNotFound() throws Exception {
-        when(service.fetchAPIDataByCityNameAndCountry(CITY_NAME,INVALID_COUNTRY_CODE)).thenReturn(
-                Optional.empty()
-        );
         mvc.perform(get(INVALID_COUNTRY_ENDPOINT).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound());
-        verify(service, times(1)).fetchAPIDataByCityNameAndCountry(CITY_NAME,INVALID_COUNTRY_CODE);
     }
 
     @Test
-    void whenBadCountryAndBadCity_thenReturnNotFound() throws Exception {
-        when(service.fetchAPIDataByCityNameAndCountry(INVALID_CITY_NAME,INVALID_COUNTRY_CODE)).thenReturn(
-                Optional.empty()
-        );
+    void whenBadCountryAndBadCity_thenReturnNotFound() throws Exception{
         mvc.perform(get(INVALID_CITY_AND_COUNTRY_ENDPOINT).contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isNotFound());
-        verify(service, times(1)).fetchAPIDataByCityNameAndCountry(INVALID_CITY_NAME,INVALID_COUNTRY_CODE);
+    }
+    @Test
+    void whenNotParemetersGiven_thenReturnBadRequest() throws Exception {
+        mvc.perform(get(BASE_QUALITY_URI).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testCacheStatistics() throws Exception {
+        mvc.perform(get(CACHE_ENDPOINT).contentType(MediaType.APPLICATION_JSON)).andDo(print())
+                .andExpect(status().isOk());
+    }
+    @Test
+    void testCacheResults() throws Exception {
+        //perfom two Requests, in order to check Cache
+        for(int i = 0; i<=1; i++) mvc.perform(get(CITY_ENDPOINT).contentType(MediaType.APPLICATION_JSON));
+
+        mvc.perform(get(CACHE_ENDPOINT).contentType(MediaType.APPLICATION_JSON)).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.numberRequests",is(2)))
+                .andExpect(jsonPath("$.numberMisses",is(1)))
+                .andExpect(jsonPath("$.numberHits",is(1)));
+
     }
 
     String createJsonResponse(){

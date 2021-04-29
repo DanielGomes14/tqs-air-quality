@@ -9,7 +9,6 @@ import org.springframework.web.server.ResponseStatusException;
 import tqs.airquality.models.City;
 import tqs.airquality.services.CityService;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")

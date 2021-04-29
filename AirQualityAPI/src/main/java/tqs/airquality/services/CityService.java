@@ -7,7 +7,6 @@ import tqs.airquality.models.City;
 import tqs.airquality.repositories.CityRepository;
 import tqs.airquality.utils.CSVHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

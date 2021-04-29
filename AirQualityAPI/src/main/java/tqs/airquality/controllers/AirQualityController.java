@@ -28,10 +28,8 @@ public class AirQualityController {
             @RequestParam String countrycode
     ) throws URISyntaxException, IOException, ParseException {
         if (cityname != null && countrycode != null ) {
-            System.out.println(countrycode);
             Optional<AirQualityData> data = service.fetchAPIDataByCityNameAndCountry(cityname,countrycode);
             if(data.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"City Or Country Not Found");
-            System.out.println("daaa");
             return  ResponseEntity.ok().body(data);
         }
         throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "City and/or Parameters were not Provided");

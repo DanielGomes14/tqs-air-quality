@@ -72,14 +72,6 @@ public class Cache {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Cache cache = (Cache) o;
-        return timeToLive == cache.timeToLive && numberRequests == cache.numberRequests && numberHits == cache.numberHits && numberMisses == cache.numberMisses && Objects.equals(cacheMap, cache.cacheMap);
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(timeToLive, numberRequests, numberHits, numberMisses, cacheMap);
     }
