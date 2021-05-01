@@ -18,6 +18,7 @@ import tqs.airquality.models.Particles;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OpenWeatherService {
@@ -31,7 +32,7 @@ public class OpenWeatherService {
     private BasicHttpClient basicHttpClient;
 
     private String buildURI(Double lat, Double lon) throws URISyntaxException {
-        var uriBuilder =  new URIBuilder("http://api.openweathermap.org/data/2.5/air_pollution");
+        var uriBuilder =  new URIBuilder("http://api.openweathermap.org/data/2.5/air_pollution/forecast");
         if(lat != null)
             uriBuilder.addParameter("lat", String.valueOf(lat));
         if(lon != null)
@@ -41,7 +42,7 @@ public class OpenWeatherService {
     }
 
     public Optional<AirQualityDataForecast> fetchForecast() throws URISyntaxException, IOException, ParseException {
-        var uriSttring = buildURI(40.64427, -8.64554);
+            var uriSttring = buildURI(40.64427, -8.64554);
         String response = this.cache.get(uriSttring);
         if(response == null)
             response = this.basicHttpClient.get(uriSttring);
@@ -65,7 +66,15 @@ public class OpenWeatherService {
                 particles.setPm25(subnode.get(COMPONENTS).get("o3").doubleValue());
                 particlesList.add(particles);
             }
-            dataForecast.setData(particlesList.toArray(new Particles[0]));
+            // the forecast is over 5 days, with 1 hour ahead, therefore, lets just
+            // just skip it, until we got only 1 metric per day, as it is enough
+            List<Particles> finalparticlesList = new ArrayList<>();
+            for(int i = 0; i< 5 ; i++) {
+                finalparticlesList.add(particlesList.get(0));
+                particlesList=particlesList.stream().skip(48).collect(Collectors.toList());
+
+            }
+            dataForecast.setData(finalparticlesList);
             data = Optional.of(dataForecast);
         }
         return data;
