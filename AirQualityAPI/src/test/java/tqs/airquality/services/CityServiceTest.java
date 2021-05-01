@@ -30,8 +30,7 @@ class CityServiceTest {
     void setUp(){
         City city = new City(1L,"Aveiro", "AV", "PT", "Portugal",40.64427, -8.64554);
         City city2 = new City(2L,"Mangualde", "VS", "PT", "Portugal",40.6046, 7.7639);
-        City city3 = new City(3L,"Viseu", "VS", "PT", "Portugal",40.7276, 7.9157);
-        List<City> allcities = Arrays.asList(city,city2,city3);
+        List<City> allcities = Arrays.asList(city,city2);
         when(cityRepository.findById(city.getCityid())).thenReturn(Optional.of(city));
         when(cityRepository.findAll()).thenReturn(allcities);
     }
@@ -51,13 +50,13 @@ class CityServiceTest {
         assertThat(notfound).isEmpty();
     }
     @Test
-     void given2Cars_whengetAll_thenReturn2Records() {
+     void given2Cities_whenGetAll_thenReturn2Records() {
         City city = new City(1L,"Aveiro", "AV", "PT", "Portugal",40.64427, -8.64554);
         City city2 = new City(2L,"Mangualde", "VS", "PT", "Portugal",40.6046, 7.7639);
         List<City> allCities = service.findAllCities();
         verifyFindAllCitiesisCalledOnce();
         assertThat(allCities)
-                .hasSize(3)
+                .hasSize(2)
                 .extracting(City::getCityname)
                 .contains(city.getCityname(),city2.getCityname());
     }

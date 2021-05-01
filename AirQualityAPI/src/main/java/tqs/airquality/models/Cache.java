@@ -71,11 +71,6 @@ public class Cache {
         return timeToLive;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(timeToLive, numberRequests, numberHits, numberMisses, cacheMap);
-    }
-
     public static class CacheValue{
         private final String value;
         private final long timeToLive;

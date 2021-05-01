@@ -33,7 +33,6 @@ public class WeatherBitAPIService {
             uriBuilder.addParameter("city", city.trim());
         }
         if(countrycode != null){
-
             uriBuilder.addParameter("country", countrycode.trim());
         }
         uriBuilder.addParameter("key","b425cc3001644d4bb6d9af3e4234d750");
@@ -54,6 +53,8 @@ public class WeatherBitAPIService {
         }
         return data;
     }
+
+
     public Cache getCacheObj(){
         return cache;
     }

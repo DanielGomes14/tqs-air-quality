@@ -16,7 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import tqs.airquality.models.AirQualityData;
 
 @SpringBootTest(webEnvironment =  SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -40,7 +39,6 @@ class AirQualityControllerIT {
 
     @Autowired
     private MockMvc mvc;
-
     @Test
     void whenGetQualityByCityNameAndCountry_thenReturnQuality() throws Exception {
         String json_res = createJsonResponse();
@@ -76,11 +74,30 @@ class AirQualityControllerIT {
         mvc.perform(get(INVALID_CITY_AND_COUNTRY_ENDPOINT).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
+
+    /*
+        Test whenever some/or all parameters were not passed within the
+        Endpoint
+     */
     @Test
     void whenNotParemetersGiven_thenReturnBadRequest() throws Exception {
         mvc.perform(get(BASE_QUALITY_URI).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
+    @Test
+    void whenNoCityParameterGiven_thenReturnBadRequest() throws Exception {
+       String endpoint =  BASE_QUALITY_URI + "?countrycode=" + COUNTRY_CODE;
+        mvc.perform(get(endpoint).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void whenNoCountryParameterGiven_thenReturnBadRequest() throws  Exception {
+        String endpoint =  BASE_QUALITY_URI + "?cityname=" + CITY_NAME;
+        mvc.perform(get(endpoint).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
 
     @Test
     void testCacheStatistics() throws Exception {

@@ -2,6 +2,7 @@ package tqs.airquality.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Generated;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
