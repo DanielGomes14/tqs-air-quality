@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import tqs.airquality.models.AirQualityData;
+import tqs.airquality.models.AirQualityDataForecast;
 import tqs.airquality.models.Cache;
+import tqs.airquality.services.OpenWeatherService;
 import tqs.airquality.services.WeatherBitAPIService;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -21,6 +23,8 @@ public class AirQualityController {
 
     @Autowired
     private WeatherBitAPIService service;
+    @Autowired
+    private OpenWeatherService service2;
 
     @GetMapping("/current_quality")
     public ResponseEntity <Object>getAirQuality(
@@ -29,6 +33,19 @@ public class AirQualityController {
     ) throws URISyntaxException, IOException, ParseException {
         if (cityname != null && countrycode != null ) {
             Optional<AirQualityData> data = service.fetchAPIDataByCityNameAndCountry(cityname,countrycode);
+            if(data.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"City Or Country Not Found");
+            return  ResponseEntity.ok().body(data);
+        }
+        throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "City and/or Parameters were not Provided");
+    }
+
+    @GetMapping("/forecast")
+    public ResponseEntity<Object> getAirQualityForecast(
+            @RequestParam String cityname,
+            @RequestParam String countrycode
+    ) throws URISyntaxException, IOException, ParseException {
+        if (cityname != null && countrycode != null ) {
+            Optional<AirQualityDataForecast> data = service2.fetchForecast();
             if(data.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"City Or Country Not Found");
             return  ResponseEntity.ok().body(data);
         }
