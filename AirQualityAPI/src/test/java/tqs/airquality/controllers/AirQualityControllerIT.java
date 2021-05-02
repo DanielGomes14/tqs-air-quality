@@ -99,6 +99,8 @@ class AirQualityControllerIT {
     }
 
 
+
+
     @Test
     void testCacheStatistics() throws Exception {
         mvc.perform(get(CACHE_ENDPOINT).contentType(MediaType.APPLICATION_JSON)).andDo(print())
@@ -124,6 +126,5 @@ class AirQualityControllerIT {
                 "\"pm25\":0.0953826,\"pm10\":0.433322,\"pollen_level_tree\":1.0,\"pollen_level_grass\":1.0," +
                 "\"pollen_level_weed\":1.0,\"mold_level\":1,\"predominant_pollen_type\":\"Molds\"}]}";
     }
-
 
 }

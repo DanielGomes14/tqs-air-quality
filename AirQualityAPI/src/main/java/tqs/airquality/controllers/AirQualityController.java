@@ -41,12 +41,12 @@ public class AirQualityController {
 
     @GetMapping("/forecast")
     public ResponseEntity<Object> getAirQualityForecast(
-            @RequestParam String cityname,
-            @RequestParam String countrycode
+            @RequestParam Double lat,
+            @RequestParam Double lon
     ) throws URISyntaxException, IOException, ParseException {
-        if (cityname != null && countrycode != null ) {
-            Optional<AirQualityDataForecast> data = service2.fetchForecast();
-            if(data.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"City Or Country Not Found");
+        if (lat != null && lon != null ) {
+            Optional<AirQualityDataForecast> data = service2.fetchForecast(lat,lon);
+            if(data.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Latitude and/or Longitude not valid.");
             return  ResponseEntity.ok().body(data);
         }
         throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "City and/or Parameters were not Provided");

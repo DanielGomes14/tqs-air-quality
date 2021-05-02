@@ -41,15 +41,17 @@ public class OpenWeatherService {
         return uriBuilder.build().toString();
     }
 
-    public Optional<AirQualityDataForecast> fetchForecast() throws URISyntaxException, IOException, ParseException {
-            var uriSttring = buildURI(40.64427, -8.64554);
+    public Optional<AirQualityDataForecast> fetchForecast(double lat, double lon) throws URISyntaxException, IOException, ParseException {
+        var uriSttring = buildURI(lat, lon);
         String response = this.cache.get(uriSttring);
-        if(response == null)
+        if(response == null){
             response = this.basicHttpClient.get(uriSttring);
+            cache.put(uriSttring,response);
+        }
 
         Optional<AirQualityDataForecast> data = Optional.empty();
-        if(response != null){
-            cache.put(uriSttring,response);
+        try {
+
             var dataForecast = new AirQualityDataForecast();
             JSONObject obj = (JSONObject) new JSONParser().parse(response);
             JsonNode node = new ObjectMapper().readTree(obj.toJSONString());
@@ -72,10 +74,13 @@ public class OpenWeatherService {
             for(int i = 0; i< 5 ; i++) {
                 finalparticlesList.add(particlesList.get(0));
                 particlesList=particlesList.stream().skip(48).collect(Collectors.toList());
-
             }
             dataForecast.setData(finalparticlesList);
             data = Optional.of(dataForecast);
+        }
+        catch (NullPointerException e){
+            // In case the API returned some errors
+            return data;
         }
         return data;
     }

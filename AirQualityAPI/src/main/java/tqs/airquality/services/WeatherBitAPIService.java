@@ -44,10 +44,10 @@ public class WeatherBitAPIService {
         String response = this.cache.get(uriString);
         if(response == null) {
             response = this.basicHttpClient.get(uriString);
+            cache.put(uriString,response);
         }
         Optional<AirQualityData> data = Optional.empty();
         if(response != null){
-            cache.put(uriString,response);
             JSONObject obj = (JSONObject) new JSONParser().parse(response);
             data = Optional.of(new ObjectMapper().readValue(obj.toString(), AirQualityData.class));
         }
