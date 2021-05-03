@@ -10,6 +10,7 @@ import java.util.List;
 
 public class CSVHelper {
 
+
     public  List<City> readCSVDataToArray(String fileName){
         List<City> citiesdata = new ArrayList<>();
 

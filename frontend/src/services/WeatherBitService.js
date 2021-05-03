@@ -16,7 +16,6 @@ class WeatherBitService{
             if (country_code != null && country_code.trim().length > 0){
                 url+='&countrycode=' + country_code
             }
-            alert(url)
             return fetch(API_BASE + url, {
                 method: 'GET',
                 mode: 'cors',

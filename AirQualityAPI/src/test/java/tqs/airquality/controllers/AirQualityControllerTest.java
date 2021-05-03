@@ -42,7 +42,6 @@ class AirQualityControllerTest {
     private static final Double VALID_LON = -7.76115;
     private static final String BASE_FORECAST_URI ="/api/v1/forecast";
     private static final String BASE_QUALITY_URI = "/api/v1/current_quality";
-    private static final String CACHE_ENDPOINT = "/api/v1/cache-statistics";
     private static final String CITY_ENDPOINT= String.format(
             "%s?cityname=%s&countrycode=%s", BASE_QUALITY_URI, CITY_NAME,COUNTRY_CODE);
     private static final String INVALID_COUNTRY_ENDPOINT= String.format(

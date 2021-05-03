@@ -24,25 +24,38 @@ const useStyles = makeStyles((theme) => ({
         transform: 'rotate(180deg)',
     },
 }));
+    
+    const addDay = (date) => {
+    console.log(date)
+    let tomorrow = new Date()
+    tomorrow.setDate(date.getDate() + 1);
+    date = tomorrow
+    return tomorrow.toUTCString()
+}
 function QualityResults(props){
     const city_name =  props.data.city_name
     const classes = useStyles();
+    let currentDate = new Date();
     const [expanded, setExpanded] = React.useState(false);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+    let CityNameAndCountry = null
+    if(props.data.city_name != null){
+        alert("ensfklds")
+        CityNameAndCountry = <Typography
+        className={"MuiTypography--heading"}
+        variant={"h4"}
+        color= "primary"
+        align = 'center'>
+        {city_name},{props.data.country_code}
+        </Typography>
+    }
 
     return (
         <>
-        <Typography
-            className={"MuiTypography--heading"}
-            variant={"h4"}
-            color= "primary"
-            align = 'center'
-        >
-        {city_name},{props.data.country_code}
-        </Typography>
+        {CityNameAndCountry}
         <Typography
             variant={"overline"}
             color= "primary"
@@ -52,92 +65,101 @@ function QualityResults(props){
         >
         Location: {props.data.lat},{props.data.lon}
         </Typography>
-        <Row >
-        <Col md="4">
-        <Card className={classes.root}>
-        <CardHeader
-        title="Ozone (o3)"
-        align='center'
-        />
-        <CardContent>
-        <Typography variant="h4" align = 'center' color="primary">
-            {props.data.data[0].o3}
-        </Typography>
-        
-        
-        </CardContent>
-        </Card>
-        </Col>
-        <Col md="4">
-        <Card className={classes.root}>
-            <CardHeader
-            title="Carbon Monoxide (co)"
-            align='center'
-            />
-            <CardContent>
-                <Typography variant="h4" align = 'center' color="primary">
-                    {props.data.data[0].co}
-                </Typography>
-            </CardContent>
-            </Card>
-        </Col>   
-        <Col md="4">
-            <Card className={classes.root}>
+        {props.data.data.map((it) => (
+            <div>
+            <Row >
+                <Col md="4">
+                <Card className={classes.root}>
                 <CardHeader
-                title="Sulfur Dioxide (co)"
+                title="Ozone (o3)"
                 align='center'
                 />
                 <CardContent>
                 <Typography variant="h4" align = 'center' color="primary">
-                    {props.data.data[0].so2}
-                </Typography>
+                    {it.o3}
+                </Typography>                
                 </CardContent>
-            </Card>
-        </Col>
-        </Row>
-        <br/>
-        <br/>
-        <Row >
-            <Col md="4">
+                </Card>
+                </Col>
+                <Col md="4">
                 <Card className={classes.root}>
                     <CardHeader
-                    title="Nitrogren Dioxide (no2)"
+                    title="Carbon Monoxide (co)"
                     align='center'
                     />
                     <CardContent>
-                    <Typography variant="h4" align = 'center' color="primary">
-                        {props.data.data[0].no2}
-                    </Typography>
+                        <Typography variant="h4" align = 'center' color="primary">
+                            {it.co}
+                        </Typography>
                     </CardContent>
-                </Card>
-            </Col>
-            <Col md="4">
-                <Card className={classes.root}>
-                    <CardHeader
-                    title="Inh. Particl. Manner (pm10)"
-                    align='center'
-                    />
-                    <CardContent>
-                    <Typography variant="h4" align = 'center' color="primary">
-                        {props.data.data[0].pm10}
-                    </Typography>
-                    </CardContent>
-                </Card>
-            </Col>
-            <Col md="4">
-                <Card className={classes.root}>
-                    <CardHeader
-                    title="Fine Particl. Manner (pm25)"
-                    align='center'
-                    />
-                    <CardContent>
-                    <Typography variant="h4" align = 'center' color="primary">
-                        {props.data.data[0].pm25}
-                    </Typography>
-                    </CardContent>
-                </Card>
-            </Col>
-        </Row>
+                    </Card>
+                </Col>   
+                <Col md="4">
+                    <Card className={classes.root}>
+                        <CardHeader
+                        title="Sulfur Dioxide (co)"
+                        align='center'
+                        />
+                        <CardContent>
+                        <Typography variant="h4" align = 'center' color="primary">
+                            {it.so2}
+                        </Typography>
+                        </CardContent>
+                    </Card>
+                </Col>
+                </Row>
+                <br/>
+                <Typography variant="h4" align = 'center' color="primary">
+                    Air Quality for {addDay({currentDate})}
+                </Typography>  
+                <br/>
+                <Row >
+                    <Col md="4">
+                        <Card className={classes.root}>
+                            <CardHeader
+                            title="Nitrogren Dioxide (no2)"
+                            align='center'
+                            />
+                            <CardContent>
+                            <Typography variant="h4" align = 'center' color="primary">
+                                {it.no2}
+                            </Typography>
+                            </CardContent>
+                        </Card>
+                    </Col>
+                    <Col md="4">
+                        <Card className={classes.root}>
+                            <CardHeader
+                            title="Inh. Particl. Manner (pm10)"
+                            align='center'
+                            />
+                            <CardContent>
+                            <Typography variant="h4" align = 'center' color="primary">
+                                {it.pm10}
+                            </Typography>
+                            </CardContent>
+                        </Card>
+                    </Col>
+                    <Col md="4">
+                        <Card className={classes.root}>
+                            <CardHeader
+                            title="Fine Particl. Manner (pm25)"
+                            align='center'
+                            />
+                            <CardContent>
+                            <Typography variant="h4" align = 'center' color="primary">
+                                {it.pm25}
+                            </Typography>
+                            </CardContent>
+                        </Card>
+                    </Col>
+            </Row>
+            <br/>
+            <br/>
+            <br/>
+        </div>
+        ))}
+        
         </>
     )
 }

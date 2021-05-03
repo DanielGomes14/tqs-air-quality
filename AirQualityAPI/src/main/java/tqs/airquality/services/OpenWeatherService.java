@@ -44,7 +44,7 @@ public class OpenWeatherService {
     public Optional<AirQualityDataForecast> fetchForecast(double lat, double lon) throws URISyntaxException, IOException, ParseException {
         var uriSttring = buildURI(lat, lon);
         String response = this.cache.get(uriSttring);
-        if(response == null){
+            if(response == null){
             response = this.basicHttpClient.get(uriSttring);
             cache.put(uriSttring,response);
         }
