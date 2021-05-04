@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import IconButton from '@material-ui/core/IconButton';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import OpenWeatherService from '../../services/OpenWeatherService'
 const useStyles = makeStyles((theme) => ({
@@ -50,7 +50,7 @@ export default function CitiesTable(props) {
     };
 
     let fetchData = (obj) => {
-      OpenWeatherService.getForecastByLatAndLon(obj.row.lat,obj.row.lon)
+      OpenWeatherService.getForecastByLatAndLon(obj.row)
       .then( (res) => {
         if(res.status == 200)
           return res.json()
@@ -86,7 +86,11 @@ export default function CitiesTable(props) {
                 <TableCell align="left">{row.statecode}</TableCell>
                 <TableCell align="left">{row.countyfull}({row.countrycode})</TableCell>
                 <TableCell align="left"><p>{row.lat},{row.lon}</p></TableCell>
-                <TableCell align="center"><SearchIcon color='primary'  onClick={ () => { fetchData({row});}} fontSize='large'/>
+                <TableCell align="center">
+                <IconButton color="primary" aria-label="search picture" onClick={ () => { fetchData({row});}} component="span">
+                  <SearchIcon  fontSize='large'/>
+                </IconButton>
+                  
                 </TableCell>
                 </TableRow>
             ))}

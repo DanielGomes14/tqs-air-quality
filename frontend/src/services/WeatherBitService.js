@@ -3,7 +3,6 @@ import {API_BASE} from "config/urls";
 class WeatherBitService{
 
     searchbyCity(searchquery){
-
         if(searchquery.includes(',')){
             let search_arr = searchquery.split(',')
             let [city_name,  country_code] = [search_arr[0], search_arr[1]]

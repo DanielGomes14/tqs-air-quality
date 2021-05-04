@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
       }
     }
   }));
+  
 function SearchBar(props) {
     const classes = useStyles();
     return (
@@ -34,9 +35,9 @@ function SearchBar(props) {
         <Col md="10">
         <TextField
         fullWidth = {true}
-        label="City Search"
+        label={props.label}
         id="outlined-margin-normal"
-        placeholder="Aveiro,PT"
+        placeholder={props.placeholder}
         className={classes.textField}
         InputProps={{
           className: classes.multilineColor

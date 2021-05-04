@@ -33,38 +33,17 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/user",
-    name: "User Profile",
-    icon: "nc-icon nc-chart-bar-32",
-    component: UserProfile,
-    layout: "/admin",
-  },
-  {
-    path: "/table",
-    name: "Table List",
+    path: "/citieslist",
+    name: "Cities List and Forecast",
     icon: "nc-icon nc-notes",
     component: TableList,
     layout: "/admin",
   },
   {
-    path: "/typography",
-    name: "Typography",
-    icon: "nc-icon nc-paper-2",
-    component: Typography,
-    layout: "/admin",
-  },
-  {
-    path: "/icons",
+    path: "/cache",
     name: "Cache Stats",
     icon: "nc-icon nc-atom",
     component: Icons,
-    layout: "/admin",
-  },
-  {
-    path: "/maps",
-    name: "My Location",
-    icon: "nc-icon nc-pin-3",
-    component: Maps,
     layout: "/admin",
   }
 ];

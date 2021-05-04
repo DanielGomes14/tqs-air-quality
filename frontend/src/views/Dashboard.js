@@ -40,7 +40,6 @@ class Dashboard extends React.Component {
       <>
       <Container fluid>
         <Row>
-        
         </Row>
         <Row>
           <Col md="8">
@@ -50,9 +49,9 @@ class Dashboard extends React.Component {
                 <p className="card-category">Accurate Data of Air Quality</p>
               </Card.Header>
               <Card.Body>
-                <SearchBar handler = {this.handler}/>
+                <SearchBar label= "City Search" placeholder="Aveiro,PT" handler = {this.handler}/>
                 { this.state.air_quality_data != null ?
-                <QualityResults data = {this.state.air_quality_data}/>
+                <QualityResults  data = {this.state.air_quality_data}/>
                 : ""
               }
               </Card.Body>

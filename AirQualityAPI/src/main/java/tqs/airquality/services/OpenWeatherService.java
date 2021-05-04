@@ -70,10 +70,11 @@ public class OpenWeatherService {
             }
             // the forecast is over 5 days, with 1 hour ahead, therefore, lets just
             // just skip it, until we got only 1 metric per day, as it is enough
+            // therefore a total of 6 days counting with the current one
             List<Particles> finalparticlesList = new ArrayList<>();
-            for(int i = 0; i< 5 ; i++) {
+            for(int i = 0; i<= 5 ; i++) {
                 finalparticlesList.add(particlesList.get(0));
-                particlesList=particlesList.stream().skip(48).collect(Collectors.toList());
+                particlesList=particlesList.stream().skip(24).collect(Collectors.toList());
             }
             dataForecast.setData(finalparticlesList);
             data = Optional.of(dataForecast);

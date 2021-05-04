@@ -25,17 +25,23 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
     
-    const addDay = (date) => {
-    console.log(date)
-    let tomorrow = new Date()
-    tomorrow.setDate(date.getDate() + 1);
-    date = tomorrow
-    return tomorrow.toUTCString()
-}
+    const getDays = (numdays) => {
+        let arr = [];
+        let today = new Date();
+        for(let i = 0; i< numdays; i++){
+            let tomorrow = new Date();
+            tomorrow.setDate(today.getDate() + i);
+            let parsed = tomorrow.getDate() +
+                        "-" + (tomorrow.getMonth() + 1) + "-"+ tomorrow.getFullYear()
+            arr.push(parsed);            
+        }
+        return arr;
+    }
+
 function QualityResults(props){
     const city_name =  props.data.city_name
     const classes = useStyles();
-    let currentDate = new Date();
+    let arr_days = getDays(props.data.data.length)
     const [expanded, setExpanded] = React.useState(false);
 
     const handleExpandClick = () => {
@@ -43,7 +49,6 @@ function QualityResults(props){
     };
     let CityNameAndCountry = null
     if(props.data.city_name != null){
-        alert("ensfklds")
         CityNameAndCountry = <Typography
         className={"MuiTypography--heading"}
         variant={"h4"}
@@ -65,9 +70,16 @@ function QualityResults(props){
         >
         Location: {props.data.lat},{props.data.lon}
         </Typography>
-        {props.data.data.map((it) => (
+        
+        {props.data.data.map((it,index) => (
             <div>
-            <Row >
+                <Row>
+                    <Col md="12">
+                    <Typography variant="h6" gutterBottom display="block" align = 'center' color="primary">
+                    Air Quality for {arr_days[index]}</Typography>
+                    </Col>
+                </Row>
+            <Row >  
                 <Col md="4">
                 <Card className={classes.root}>
                 <CardHeader
@@ -109,9 +121,7 @@ function QualityResults(props){
                 </Col>
                 </Row>
                 <br/>
-                <Typography variant="h4" align = 'center' color="primary">
-                    Air Quality for {addDay({currentDate})}
-                </Typography>  
+
                 <br/>
                 <Row >
                     <Col md="4">
@@ -163,4 +173,4 @@ function QualityResults(props){
         </>
     )
 }
-export default  QualityResults;
+export default QualityResults;
