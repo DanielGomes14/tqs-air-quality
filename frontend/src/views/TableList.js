@@ -27,16 +27,16 @@ class TableList extends React.Component {
       open: false,
 
     }
-    this.handleClickOpen = this.handleClickOpen.bind(this);
   }
 
   // kinda repeating but yeah..
   handleClickOpen = () => {
-    this.state.open = true;
+    this.setState({open:true});
+
   };
 
   handleClose = () => {
-    this.state.open = false;
+    this.setState({open:false});
   };
 
   handler = (coords) => {
@@ -91,10 +91,10 @@ class TableList extends React.Component {
                 open={this.state.open}
                 onClose={this.handleClose}
                 aria-labelledby="max-width-dialog-title">
-                <DialogTitle id="max-width-dialog-title">Optional sizes</DialogTitle>
+                <DialogTitle id="max-width-dialog-title">Air Quality Results</DialogTitle>
                 <DialogContent>
                   {this.state.air_quality_data != null ?
-                  <QualityResults data={this.state.air_quality_data}/> : ""}
+                  <QualityResults data={this.state.air_quality_data}/> : "No results Found"}
                   </DialogContent>
                 <DialogActions>
                   <Button onClick={this.handleClose} color="primary">Close

@@ -106,7 +106,7 @@ export default function CitiesTable(props) {
       >
         <DialogTitle id="max-width-dialog-title">Optional sizes</DialogTitle>
         <DialogContent>
-          {data != null ? <QualityResults data={data}/>: ""}
+          {data != null ? <QualityResults data={data}/>: "No results Found"}
           </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">Close

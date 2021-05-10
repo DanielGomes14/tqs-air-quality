@@ -60,12 +60,13 @@ public class OpenWeatherService {
             List<Particles> particlesList = new ArrayList<>();
             for( JsonNode subnode : node.get("list")){
                 var particles = new Particles();
+                System.out.println(subnode.get(COMPONENTS));
                 particles.setAqi(subnode.get("main").get("aqi").intValue());
                 particles.setCo(subnode.get(COMPONENTS).get("co").doubleValue());
                 particles.setNo2(subnode.get(COMPONENTS).get("no2").doubleValue());
                 particles.setO3(subnode.get(COMPONENTS).get("o3").doubleValue());
-                particles.setPm10(subnode.get(COMPONENTS).get("o3").doubleValue());
-                particles.setPm25(subnode.get(COMPONENTS).get("o3").doubleValue());
+                particles.setPm10(subnode.get(COMPONENTS).get("pm10").doubleValue());
+                particles.setPm25(subnode.get(COMPONENTS).get("pm2_5").doubleValue());
                 particlesList.add(particles);
             }
             // the forecast is over 5 days, with 1 hour ahead, therefore, lets just

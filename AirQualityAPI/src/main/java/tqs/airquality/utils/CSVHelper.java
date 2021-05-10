@@ -19,7 +19,7 @@ public class CSVHelper {
             var counter = 0;
             while ((line = br.readLine()) != null) {
                  counter++;
-                if(counter == 1) continue;;
+                if(counter == 1) continue;
                 String[] citysep = line.split(",");
                 if(citysep.length == 7){
                     City city = new City(

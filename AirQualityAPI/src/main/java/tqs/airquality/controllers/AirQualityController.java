@@ -27,26 +27,27 @@ public class AirQualityController {
     private OpenWeatherService service2;
 
     @GetMapping("/current_quality")
-    public ResponseEntity <Object>getAirQuality(
+    public ResponseEntity <AirQualityData>getAirQuality(
             @RequestParam String cityname,
             @RequestParam String countrycode
     ) throws URISyntaxException, IOException, ParseException {
         if (cityname != null && countrycode != null ) {
-            Optional<AirQualityData> data = service.fetchAPIDataByCityNameAndCountry(cityname,countrycode);
-            if(data.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"City Or Country Not Found");
+            AirQualityData data = service.fetchAPIDataByCityNameAndCountry(cityname,countrycode).orElseThrow(()->
+                    new ResponseStatusException(HttpStatus.NOT_FOUND,"City Or Country Not Found")
+            );
             return  ResponseEntity.ok().body(data);
         }
         throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "City and/or Parameters were not Provided");
     }
 
     @GetMapping("/forecast")
-    public ResponseEntity<Object> getAirQualityForecast(
+    public ResponseEntity<AirQualityDataForecast> getAirQualityForecast(
             @RequestParam Double lat,
             @RequestParam Double lon
     ) throws URISyntaxException, IOException, ParseException {
         if (lat != null && lon != null ) {
-            Optional<AirQualityDataForecast> data = service2.fetchForecast(lat,lon);
-            if(data.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Latitude and/or Longitude not valid.");
+            AirQualityDataForecast data = service2.fetchForecast(lat,lon).orElseThrow(() ->
+             new ResponseStatusException(HttpStatus.NOT_FOUND,"Latitude and/or Longitude not valid."));
             return  ResponseEntity.ok().body(data);
         }
         throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "City and/or Parameters were not Provided");
