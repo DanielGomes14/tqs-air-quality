@@ -102,7 +102,7 @@ export default function CitiesTable(props) {
         onClose={handleClose}
         aria-labelledby="max-width-dialog-title"
       >
-        <DialogTitle id="max-width-dialog-title">Optional sizes</DialogTitle>
+        <DialogTitle id="max-width-dialog-title">Air Quality Data Results</DialogTitle>
         <DialogContent>
           {data != null ? <QualityResults data={data}/>: "No results Found"}
           </DialogContent>

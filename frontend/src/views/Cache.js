@@ -3,17 +3,13 @@ import CacheService from "../services/CacheService"
 import CacheCards from "../components/CacheCards/CacheCards"
 // react-bootstrap components
 import {
-  Badge,
-  Button,
   Card,
-  Navbar,
-  Nav,
   Container,
   Row,
   Col,
 } from "react-bootstrap";
 
-class Icons extends React.Component{
+class Cache extends React.Component{
   constructor(props){
     super(props)
     this.state = {
@@ -43,10 +39,6 @@ class Icons extends React.Component{
             <Card>
               <Card.Header>
                 <Card.Title as="h4">Cache Statistics</Card.Title>
-                <p className="card-category">
-                  Handcrafted by our friends from{" "}
-                  <a href="https://nucleoapp.com/?ref=1712">NucleoApp</a>
-                </p>
               </Card.Header>
               <Card.Body className="all-icons">
               {this.state.cache_stats_data != null ?
@@ -64,4 +56,4 @@ class Icons extends React.Component{
 }
 
 
-export default Icons;
+export default Cache;

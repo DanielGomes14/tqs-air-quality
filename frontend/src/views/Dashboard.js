@@ -38,8 +38,9 @@ class Dashboard extends React.Component {
       this.setState({has_error:true, error_message:"Some Error Occured"})
 
     })
-    
   }
+
+
   render(){
     return(
       <>
@@ -54,7 +55,7 @@ class Dashboard extends React.Component {
                 <p className="card-category">Accurate Data of Air Quality</p>
               </Card.Header>
               <Card.Body>
-                <SearchBar label= "City Search" placeholder="Aveiro,PT" handler = {this.handler}/>
+                <SearchBar label= "Current-Time Air Quality Data Search" placeholder="Aveiro,PT" handler = {this.handler}/>
                 { this.state.air_quality_data != null ?
                 <QualityResults  data = {this.state.air_quality_data}/>
                 : (this.state.has_error)?
@@ -68,8 +69,7 @@ class Dashboard extends React.Component {
                 <hr></hr>
                 <div className="stats">
                   <i className="fas fa-history"></i>
-                  Updated 3 minutes ago
-                </div>
+«                </div>
               </Card.Footer>
             </Card>
           </Col>

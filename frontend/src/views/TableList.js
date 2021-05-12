@@ -84,7 +84,7 @@ class TableList extends React.Component {
                 </p>
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">
-              <SearchBar label= "City Search by Coordinates" placeholder="Lat,Lon" handler = {this.handler} />
+              <SearchBar label= "Forecast Air Quality Data Search" placeholder="Aveiro,PT" handler = {this.handler} />
                 {this.state.cities_list_data != null ? 
                 <CitiesTable cities_list_data = {this.state.cities_list_data} />
                 :
