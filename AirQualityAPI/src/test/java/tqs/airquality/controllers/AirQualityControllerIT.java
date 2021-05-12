@@ -123,7 +123,7 @@ class AirQualityControllerIT {
     }
     @Test
     void whenGetForecastByInvalidCityAndCountry_thenReturnNotFound() throws Exception {
-        mvc.perform(get(INVALID_CITY_AND_COUNTRY_ENDPOINT).contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get(INVALID_CITY_COUNTRY_FORECAST_ENDPOINT).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }

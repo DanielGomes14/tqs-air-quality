@@ -15,6 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.context.ContextConfiguration;
 import tqs.airquality.models.AirQualityData;
 import tqs.airquality.models.AirQualityDataForecast;
 import tqs.airquality.utils.URIHelper;
@@ -27,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(MockitoExtension.class)
+@ContextConfiguration
 class WeatherBitAPIServiceTest {
 
     @Mock(lenient = true)
@@ -36,7 +39,7 @@ class WeatherBitAPIServiceTest {
     private WeatherBitAPIService service;
     private static final String CURRENT_BASE_URI = "https://api.weatherbit.io/v2.0/current/airquality";
     private static final String FORECAST_BASE_URI = "https://api.weatherbit.io/v2.0/forecast/airquality";
-    private static  final String API_TOKEN = "b425cc3001644d4bb6d9af3e4234d750";
+    private static final String API_TOKEN = "b425cc3001644d4bb6d9af3e4234d750";
     private static  final String CITY = "Mangualde";
     private static  final String INVALID_CITY = "UmaCidadeInvalida";
     private static final String COUNTRY ="PT";
@@ -48,6 +51,7 @@ class WeatherBitAPIServiceTest {
     @Test
     void whenGetQualityByCityNameAndCountry_thenReturnCorrectQualityData() throws IOException, URISyntaxException, ParseException {
         String json_res = createJsonResponse();
+        System.out.println(API_TOKEN);
         String final_current_url =  new URIHelper().buildURIWeatherBit(CURRENT_BASE_URI,API_TOKEN,CITY,COUNTRY).build().toString();
         when(httpClient.get(final_current_url)).thenReturn(json_res);
 

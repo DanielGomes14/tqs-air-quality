@@ -18,15 +18,4 @@ public class URIHelper {
         return uriBuilder;
     }
 
-    public URIBuilder buildURIOpenWeather(String token, Double lat, Double lon) throws URISyntaxException {
-        URIBuilder uriBuilder =  new URIBuilder("http://api.openweathermap.org/data/2.5/air_pollution/forecast");
-        if(lat != null){
-            uriBuilder.addParameter("lat", String.valueOf(lat));
-        }
-        if(lon != null){
-            uriBuilder.addParameter("lon", String.valueOf(lon));
-        }
-        uriBuilder.addParameter("appid",token);
-        return uriBuilder;
-    }
 }

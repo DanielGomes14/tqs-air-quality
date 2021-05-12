@@ -23,27 +23,26 @@ import java.util.stream.Collectors;
 
 @Service
 public class WeatherBitAPIService {
-    @Value("${weatherbit_token}")
-    private String weatherbittoken;
-
-    private final Cache cache  = new Cache();
-    private static final String CURRENT_BASE_URI = "https://api.weatherbit.io/v2.0/current/airquality";
-    private static final String FORECAST_BASE_URI = "https://api.weatherbit.io/v2.0/forecast/airquality";
 
     @Autowired
     private BasicHttpClient basicHttpClient;
 
+    private final Cache cache  = new Cache();
+    private static final String CURRENT_BASE_URI = "https://api.weatherbit.io/v2.0/current/airquality";
+    private static final String FORECAST_BASE_URI = "https://api.weatherbit.io/v2.0/forecast/airquality";
+    private static final String WEATHERBITTOKEN = "b425cc3001644d4bb6d9af3e4234d750";
 
 
-    public String buildURI(String city, String countrycode, String base_uri) throws URISyntaxException {
-        var uriBuilder =  new URIBuilder(base_uri);
+
+    public String buildURI(String city, String countrycode, String baseuri) throws URISyntaxException {
+        var uriBuilder =  new URIBuilder(baseuri);
         if(city != null){
             uriBuilder.addParameter("city", city.trim());
         }
         if(countrycode != null){
             uriBuilder.addParameter("country", countrycode.trim());
         }
-        uriBuilder.addParameter("key","b425cc3001644d4bb6d9af3e4234d750");
+        uriBuilder.addParameter("key",WEATHERBITTOKEN);
         return uriBuilder.build().toString();
     }
 
