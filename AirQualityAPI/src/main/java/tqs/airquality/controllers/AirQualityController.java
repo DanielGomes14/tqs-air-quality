@@ -13,6 +13,8 @@ import tqs.airquality.models.Cache;
 import tqs.airquality.services.WeatherBitAPIService;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @RestController
 @RequestMapping("api/v1/")
@@ -21,7 +23,7 @@ public class AirQualityController {
 
     @Autowired
     private WeatherBitAPIService service;
-
+    private static final Logger logger = LogManager.getLogger(AirQualityController.class);
 
     @GetMapping("/current_quality")
     public ResponseEntity <AirQualityData>getAirQuality(
@@ -31,13 +33,12 @@ public class AirQualityController {
         /*
          Retrieves Air Quality Data given a cityname and its countrycode
          */
-        if (cityname != null && countrycode != null ) {
-            AirQualityData data = service.fetchAPIDataByCityNameAndCountry(cityname,countrycode).orElseThrow(()->
-                    new ResponseStatusException(HttpStatus.NOT_FOUND,"City Or Country Not Found")
-            );
-            return  ResponseEntity.ok().body(data);
-        }
-        throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "City and/or Parameters were not Provided");
+        logger.info("New Request for current air quality");
+        AirQualityData data = service.fetchAPIDataByCityNameAndCountry(cityname,countrycode).orElseThrow(()->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,"City Or Country Not Found")
+        );
+        return  ResponseEntity.ok().body(data);
+
     }
 
     @GetMapping("/forecast")
@@ -49,12 +50,12 @@ public class AirQualityController {
          Retrieves today's Air Quality Data and the forecast for the next five days,
           given coordinates ( latitude and longitude)
          */
-        if (cityname != null && countrycode != null ) {
-            AirQualityDataForecast data = service.fetchForecast(cityname,countrycode).orElseThrow(() ->
-             new ResponseStatusException(HttpStatus.NOT_FOUND,"Latitude and/or Longitude not valid."));
-            return  ResponseEntity.ok().body(data);
-        }
-        throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "City and/or Parameters were not Provided");
+        logger.info("New Request for forecast air quality");
+        AirQualityDataForecast data = service.fetchForecast(cityname,countrycode).orElseThrow(() ->
+         new ResponseStatusException(HttpStatus.NOT_FOUND,"Latitude and/or Longitude not valid."));
+        logger.info("No error in Request");
+        return  ResponseEntity.ok().body(data);
+
     }
 
     @GetMapping("/cache-statistics")
@@ -62,6 +63,7 @@ public class AirQualityController {
         /*
             Cache Statistics for Air Quality Data
          */
-            return ResponseEntity.ok().body(service.getCacheObj());
+        logger.info("New Request for Cache Statistics");
+        return ResponseEntity.ok().body(service.getCacheObj());
     }
 }

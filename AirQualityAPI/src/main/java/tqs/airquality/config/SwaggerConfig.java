@@ -24,7 +24,7 @@ public class SwaggerConfig {
                 .build();
 
     }
-    private ApiInfo apiInfo() {
+    ApiInfo apiInfo() {
         return new ApiInfo(
                 "TQS Air Quality REST API",
                 "REST API For TQS Air Quality",

@@ -1,13 +1,12 @@
 package tqs.airquality.services;
-
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.hc.core5.net.URIBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tqs.airquality.models.AirQualityData;
 import tqs.airquality.models.AirQualityDataForecast;
@@ -31,6 +30,7 @@ public class WeatherBitAPIService {
     private static final String CURRENT_BASE_URI = "https://api.weatherbit.io/v2.0/current/airquality";
     private static final String FORECAST_BASE_URI = "https://api.weatherbit.io/v2.0/forecast/airquality";
     private static final String WEATHERBITTOKEN = "b425cc3001644d4bb6d9af3e4234d750";
+    private static final Logger logger = LogManager.getLogger(WeatherBitAPIService.class);
 
 
 
@@ -48,11 +48,14 @@ public class WeatherBitAPIService {
 
     public Optional<AirQualityData> fetchAPIDataByCityNameAndCountry(String cityName, String countrycode) throws URISyntaxException, IOException, ParseException {
         var uriString =  buildURI(cityName,countrycode, CURRENT_BASE_URI);
+
         String response = this.cache.get(uriString);
         if(response == null) {
             response = this.basicHttpClient.get(uriString);
+            logger.info("Put on Cache");
             cache.put(uriString,response);
         }
+
         Optional<AirQualityData> data = Optional.empty();
         if(response != null){
             JSONObject obj = (JSONObject) new JSONParser().parse(response);
@@ -65,12 +68,12 @@ public class WeatherBitAPIService {
         String response = this.cache.get(uriSttring);
         if(response == null){
             response = this.basicHttpClient.get(uriSttring);
+            logger.info("Put Forecast Request on Cache");
             cache.put(uriSttring,response);
         }
 
         Optional<AirQualityDataForecast> data = Optional.empty();
         try {
-
             JSONObject obj = (JSONObject) new JSONParser().parse(response);
             AirQualityDataForecast forecast = new ObjectMapper().readValue(obj.toString(),
                     AirQualityDataForecast.class);
