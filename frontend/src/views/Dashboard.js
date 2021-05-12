@@ -19,19 +19,24 @@ class Dashboard extends React.Component {
     super(props);
     this.state = {
       air_quality_data : null,
+      has_error: false,
+      error_message: ""
     }
   }
   handler = (city_name) => {
-    console.log(city_name)
     WeatherBitService.searchbyCity(city_name)
     .then( (res) => {
       if(res.status == 200){
+        this.setState({has_error:false, error_message:""})
         return res.json();
       }
+      this.setState({has_error:true, error_message: "City And/Or Country Not Found!"})
     }).then((res) => {
-        console.log(res)
         this.setState({air_quality_data:res})
-        console.log(this.state.air_quality_data)
+    })
+    .catch(() => {
+      this.setState({has_error:true, error_message:"Some Error Occured"})
+
     })
     
   }
@@ -52,6 +57,10 @@ class Dashboard extends React.Component {
                 <SearchBar label= "City Search" placeholder="Aveiro,PT" handler = {this.handler}/>
                 { this.state.air_quality_data != null ?
                 <QualityResults  data = {this.state.air_quality_data}/>
+                : (this.state.has_error)?
+                <Typography variant="body1" align = 'center' color="error">
+                {this.state.error_message}
+                </Typography>
                 : ""
               }
               </Card.Body>

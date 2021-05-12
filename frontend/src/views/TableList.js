@@ -2,13 +2,14 @@ import React from "react";
 import CitiesService from "../services/CitiesService"
 import CitiesTable from "../components/CitiesTable/CitiesTable"
 import SearchBar from "../components/SearchBar/SearchBar"
-import OpenWeatherService from "../services/OpenWeatherService"
+import WeatherBitService from "../services/WeatherBitService"
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import QualityResults from "../components/AirQualityResults/AirQualityResults"
+import Typography from '@material-ui/core/Typography';
 
 
 // react-bootstrap components
@@ -25,7 +26,8 @@ class TableList extends React.Component {
     this.state = {
       cities_list_data: null,
       open: false,
-
+      has_error:true,
+      error_message:""
     }
   }
 
@@ -39,16 +41,21 @@ class TableList extends React.Component {
     this.setState({open:false});
   };
 
-  handler = (coords) => {
+  handler = (inputquery) => {
     this.handleClickOpen()
-    OpenWeatherService.getForecastByLatAndLon(coords)
+    WeatherBitService.getForecastByCityAndCountry(inputquery)
     .then( (res) => {
       if(res.status == 200){
+        this.setState({has_error:false, error_message:""})
         return res.json();
       }
+      this.setState({has_error:true, error_message: "City Or Country Not Found!"})
     }).then((res) => {
         this.setState({air_quality_data:res})
     })
+    .catch( () => {
+      this.setState({has_error:true, error_message:"Some Error Occured"})
+    });
     
   }
   componentDidMount() {
@@ -60,6 +67,7 @@ class TableList extends React.Component {
     .then( ( res)=> {
       this.setState({cities_list_data: res})
     })
+    
   }
   render(){
     return (
@@ -94,7 +102,11 @@ class TableList extends React.Component {
                 <DialogTitle id="max-width-dialog-title">Air Quality Results</DialogTitle>
                 <DialogContent>
                   {this.state.air_quality_data != null ?
-                  <QualityResults data={this.state.air_quality_data}/> : "No results Found"}
+                  <QualityResults data={this.state.air_quality_data}/> : (this.state.has_error)?
+                  <Typography variant="body1" align = 'center' color="error">
+                  {this.state.error_message}
+                  </Typography>
+                  : ""}
                   </DialogContent>
                 <DialogActions>
                   <Button onClick={this.handleClose} color="primary">Close

@@ -47,20 +47,18 @@ function QualityResults(props){
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-    let CityNameAndCountry = null
-    if(props.data.city_name != null){
-        CityNameAndCountry = <Typography
+        
+
+
+    return (
+        <>
+        <Typography
         className={"MuiTypography--heading"}
         variant={"h4"}
         color= "primary"
         align = 'center'>
         {city_name},{props.data.country_code}
         </Typography>
-    }
-
-    return (
-        <>
-        {CityNameAndCountry}
         <Typography
             variant={"overline"}
             color= "primary"
@@ -109,7 +107,7 @@ function QualityResults(props){
                 <Col md="4">
                     <Card className={classes.root}>
                         <CardHeader
-                        title="Sulfur Dioxide (co)"
+                        title="Sulfur Dioxide (so2)"
                         align='center'
                         />
                         <CardContent>

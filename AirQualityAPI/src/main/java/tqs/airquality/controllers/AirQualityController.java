@@ -10,11 +10,9 @@ import org.springframework.web.server.ResponseStatusException;
 import tqs.airquality.models.AirQualityData;
 import tqs.airquality.models.AirQualityDataForecast;
 import tqs.airquality.models.Cache;
-import tqs.airquality.services.OpenWeatherService;
 import tqs.airquality.services.WeatherBitAPIService;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/")
@@ -23,14 +21,16 @@ public class AirQualityController {
 
     @Autowired
     private WeatherBitAPIService service;
-    @Autowired
-    private OpenWeatherService service2;
+
 
     @GetMapping("/current_quality")
     public ResponseEntity <AirQualityData>getAirQuality(
             @RequestParam String cityname,
             @RequestParam String countrycode
     ) throws URISyntaxException, IOException, ParseException {
+        /*
+         Retrieves Air Quality Data given a cityname and its countrycode
+         */
         if (cityname != null && countrycode != null ) {
             AirQualityData data = service.fetchAPIDataByCityNameAndCountry(cityname,countrycode).orElseThrow(()->
                     new ResponseStatusException(HttpStatus.NOT_FOUND,"City Or Country Not Found")
@@ -42,11 +42,15 @@ public class AirQualityController {
 
     @GetMapping("/forecast")
     public ResponseEntity<AirQualityDataForecast> getAirQualityForecast(
-            @RequestParam Double lat,
-            @RequestParam Double lon
+            @RequestParam String cityname,
+            @RequestParam String countrycode
     ) throws URISyntaxException, IOException, ParseException {
-        if (lat != null && lon != null ) {
-            AirQualityDataForecast data = service2.fetchForecast(lat,lon).orElseThrow(() ->
+        /*
+         Retrieves today's Air Quality Data and the forecast for the next five days,
+          given coordinates ( latitude and longitude)
+         */
+        if (cityname != null && countrycode != null ) {
+            AirQualityDataForecast data = service.fetchForecast(cityname,countrycode).orElseThrow(() ->
              new ResponseStatusException(HttpStatus.NOT_FOUND,"Latitude and/or Longitude not valid."));
             return  ResponseEntity.ok().body(data);
         }
@@ -55,6 +59,9 @@ public class AirQualityController {
 
     @GetMapping("/cache-statistics")
     public ResponseEntity<Cache> getCacheStatistics(){
-            return ResponseEntity.ok().body(this.service.getCacheObj());
+        /*
+            Cache Statistics for Air Quality Data
+         */
+            return ResponseEntity.ok().body(service.getCacheObj());
     }
 }

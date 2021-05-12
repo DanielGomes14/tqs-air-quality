@@ -19,7 +19,7 @@ public class SwaggerConfig {
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("tqs.airquality"))
                 .paths(PathSelectors.regex("/.*"))
                 .build();
 

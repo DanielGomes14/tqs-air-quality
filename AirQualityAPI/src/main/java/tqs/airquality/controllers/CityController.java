@@ -19,6 +19,9 @@ public class CityController {
 
     @GetMapping("/cities")
     public ResponseEntity<List<City>> findAllCities(){
+        /*
+            Returns a set of 50 cities
+         */
         return ResponseEntity.ok().body(cityService.findAllCities());
     }
 
@@ -26,6 +29,9 @@ public class CityController {
     public ResponseEntity<City> findCityById(
             @PathVariable(value = "id") long id
     ){
+        /*
+            Returns a city given it's id
+         */
         City city = cityService.findCityById(id).orElseThrow(() -> new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "City with id ::" + id + "not found"
         ));

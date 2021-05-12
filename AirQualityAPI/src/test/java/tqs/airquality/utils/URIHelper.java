@@ -2,11 +2,12 @@ package tqs.airquality.utils;
 
 import org.apache.hc.core5.net.URIBuilder;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 
 public class URIHelper {
-    public URIBuilder buildURIWeatherBit(String token, String city, String country) throws URISyntaxException {
-        URIBuilder uriBuilder =  new URIBuilder("https://api.weatherbit.io/v2.0/current/airquality");
+    public URIBuilder buildURIWeatherBit(String URIBASE, String token, String city, String country) throws URISyntaxException {
+        URIBuilder uriBuilder =  new URIBuilder(URIBASE);
         if(city != null){
             uriBuilder.addParameter("city", city);
         }

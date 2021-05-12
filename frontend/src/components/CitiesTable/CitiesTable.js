@@ -15,7 +15,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import OpenWeatherService from '../../services/OpenWeatherService'
+import WeatherBitService from '../../services/WeatherBitService'
 const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
@@ -50,15 +50,13 @@ export default function CitiesTable(props) {
     };
 
     let fetchData = (obj) => {
-      OpenWeatherService.getForecastByLatAndLon(obj.row)
+      WeatherBitService.getForecastByCityAndCountry(obj.row)
       .then( (res) => {
         if(res.status == 200)
           return res.json()
       })
       .then( ( res)=> {
-        console.log(res)
         setData(res)
-        console.log(data)
         setOpen(true);
       })
     }

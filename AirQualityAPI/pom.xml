@@ -116,6 +116,34 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>${swagger.version}</version>
 		</dependency>
+
+		<!-- Cucumber -->
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>6.10.3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-junit-platform-engine</artifactId>
+			<version>6.10.3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>3.141.59</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- Selenium Webdriver -->
+		<dependency>
+			<groupId>io.github.bonigarcia</groupId>
+			<artifactId>webdrivermanager</artifactId>
+			<version>4.3.1</version>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apache.httpcomponents.client5</groupId>
 			<artifactId>httpclient5</artifactId>
@@ -182,6 +210,17 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<excludes>
+					<!-- exclude Lombok models  -->
+					<exclude>tqs/airquality/AirQualityData*</exclude>
+					<exclude>tqs/airquality/AirQualityDataForecast*</exclude>
+					<exclude>tqs/airquality/models/City*</exclude>
+					<exclude>tqs/airquality/models/Particles*</exclude>
+					<exclude>tqs/airquality/config/SwaggerConfig*</exclude>
+
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
