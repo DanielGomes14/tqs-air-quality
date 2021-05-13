@@ -68,6 +68,15 @@ function QualityResults(props){
         >
         Location: {props.data.lat},{props.data.lon}
         </Typography>
+        <Typography
+            variant={"overline"}
+            color= "primary"
+            gutterBottom
+            display="block"
+            align = 'center'
+        >
+        AirQualityIndex: {props.data.aqi}
+        </Typography>
         
         {props.data.data.map((it,index) => (
             <div>

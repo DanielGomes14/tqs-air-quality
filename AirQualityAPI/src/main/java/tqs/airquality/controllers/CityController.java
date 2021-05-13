@@ -1,6 +1,7 @@
 package tqs.airquality.controllers;
 
 
+import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class CityController {
 
 
     @GetMapping("/cities")
+    @ApiOperation("Get a List of 50 cities")
     public ResponseEntity<List<City>> findAllCities(){
         /*
             Returns a set of 50 cities
@@ -32,6 +34,7 @@ public class CityController {
     }
 
     @GetMapping("/cities/{id}")
+    @ApiOperation("Get a specific City")
     public ResponseEntity<City> findCityById(
             @PathVariable(value = "id") long id
     ){

@@ -81,6 +81,8 @@ class AirQualityControllerTest {
 
         verify(service, times(1)).fetchAPIDataByCityNameAndCountry(CITY_NAME,COUNTRY_CODE);
     }
+
+
     @Test
     void when_BadCityName_thenReturnNotFound() throws Exception {
         when(service.fetchAPIDataByCityNameAndCountry(INVALID_CITY_NAME,COUNTRY_CODE)).thenReturn(

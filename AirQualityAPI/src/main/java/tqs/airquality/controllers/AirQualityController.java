@@ -1,6 +1,7 @@
 package tqs.airquality.controllers;
 
 
+import io.swagger.annotations.ApiOperation;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class AirQualityController {
     private static final Logger logger = LogManager.getLogger(AirQualityController.class);
 
     @GetMapping("/current_quality")
+    @ApiOperation("Get the current Air Quality Information")
     public ResponseEntity <AirQualityData>getAirQuality(
             @RequestParam String cityname,
             @RequestParam String countrycode
@@ -42,12 +44,14 @@ public class AirQualityController {
     }
 
     @GetMapping("/forecast")
+    @ApiOperation(value = "Get current Time Air Quality Data and the forecast for the next two days" +
+            " at this time. ")
     public ResponseEntity<AirQualityDataForecast> getAirQualityForecast(
             @RequestParam String cityname,
             @RequestParam String countrycode
     ) throws URISyntaxException, IOException, ParseException {
         /*
-         Retrieves today's Air Quality Data and the forecast for the next five days,
+         Retrieves today's Air Quality Data and the forecast for the next two days,
           given coordinates ( latitude and longitude)
          */
         logger.info("New Request for forecast air quality");
@@ -59,6 +63,7 @@ public class AirQualityController {
     }
 
     @GetMapping("/cache-statistics")
+    @ApiOperation("Get Current Cache Statistics")
     public ResponseEntity<Cache> getCacheStatistics(){
         /*
             Cache Statistics for Air Quality Data

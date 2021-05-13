@@ -2,8 +2,6 @@ package tqs.airquality.controllers;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,7 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import tqs.airquality.models.AirQualityData;
 import tqs.airquality.models.AirQualityDataForecast;
 
@@ -135,7 +132,9 @@ class AirQualityControllerIT {
     @Test
     void testCacheResults() throws Exception {
         //perfom two Requests, in order to check Cache
-        for(int i = 0; i<=1; i++) mvc.perform(get(CITY_ENDPOINT).contentType(MediaType.APPLICATION_JSON));
+        for(int i = 0; i<=1; i++) {
+            mvc.perform(get(CITY_ENDPOINT).contentType(MediaType.APPLICATION_JSON));
+        }
 
         mvc.perform(get(CACHE_ENDPOINT).contentType(MediaType.APPLICATION_JSON)).andDo(print())
                 .andExpect(status().isOk())

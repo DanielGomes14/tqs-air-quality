@@ -7,25 +7,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import static org.hamcrest.CoreMatchers.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import tqs.airquality.models.AirQualityData;
 import tqs.airquality.models.AirQualityDataForecast;
 import tqs.airquality.utils.URIHelper;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -51,7 +44,6 @@ class WeatherBitAPIServiceTest {
     @Test
     void whenGetQualityByCityNameAndCountry_thenReturnCorrectQualityData() throws IOException, URISyntaxException, ParseException {
         String json_res = createJsonResponse();
-        System.out.println(API_TOKEN);
         String final_current_url =  new URIHelper().buildURIWeatherBit(CURRENT_BASE_URI,API_TOKEN,CITY,COUNTRY).build().toString();
         when(httpClient.get(final_current_url)).thenReturn(json_res);
 
@@ -61,6 +53,8 @@ class WeatherBitAPIServiceTest {
         assertThat(res_service.getCity_name(), is(json_obj.getCity_name()));
         assertThat(res_service,is(json_obj));
     }
+
+
     @Test
     void whenGetQualityByBadCityNameAndCountry_thenReturnIncorrectData() throws IOException, URISyntaxException, ParseException {
         String current_wrong_url = new URIHelper().buildURIWeatherBit(CURRENT_BASE_URI,API_TOKEN,CITY,INVALID_COUNTRY).build().toString();
