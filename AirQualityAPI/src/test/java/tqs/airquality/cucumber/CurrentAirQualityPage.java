@@ -72,13 +72,13 @@ public class CurrentAirQualityPage {
     }
     @And("some indicators like {string}, {string}, or {string}")
     public void resultsindicators(String ind1,String ind2, String ind3){
-        final WebDriverWait wait = new WebDriverWait(driver, 2);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".row:nth-child(2) > .col-md-4:nth-child(2)")));
-        assertThat(driver.findElement(By.cssSelector(".row:nth-child(2) > .col-md-4:nth-child(2) .MuiCardHeader-root .MuiTypography-root")).getText(),
+        final WebDriverWait wait = new WebDriverWait(driver, 3);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".row:nth-child(3) > .col-md-4:nth-child(2)" )));
+        assertThat(driver.findElement(By.cssSelector(".row:nth-child(3) > .col-md-4:nth-child(2) .MuiCardHeader-root .MuiTypography-root")).getText(),
                 containsString(ind1));
-        assertThat(driver.findElement(By.cssSelector(".row:nth-child(2) > .col-md-4:nth-child(3) .MuiCardHeader-root .MuiTypography-root")).getText(),
+        assertThat(driver.findElement(By.cssSelector(".row:nth-child(3) > .col-md-4:nth-child(3) .MuiCardHeader-root .MuiTypography-root")).getText(),
                 containsString(ind2));
-        assertThat(driver.findElement(By.cssSelector(".row:nth-child(5) > .col-md-4:nth-child(1) .MuiCardHeader-root .MuiTypography-root")).getText(),
+        assertThat(driver.findElement(By.cssSelector(".row:nth-child(6) > .col-md-4:nth-child(1) .MuiCardHeader-root .MuiTypography-root")).getText(),
                 containsString(ind3));
     }
 }
