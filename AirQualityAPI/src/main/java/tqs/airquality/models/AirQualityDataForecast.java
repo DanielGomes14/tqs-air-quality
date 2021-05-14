@@ -11,5 +11,5 @@ public class AirQualityDataForecast {
     private String city_name;
     private String country_code;
     private String state_code;
-    private List<Particles> data;
+    private List<Metrics> data;
 }

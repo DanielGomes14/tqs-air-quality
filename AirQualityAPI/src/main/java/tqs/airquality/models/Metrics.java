@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Particles {
+public class Metrics {
     private int aqi;
     private double o3;
     private double so2;

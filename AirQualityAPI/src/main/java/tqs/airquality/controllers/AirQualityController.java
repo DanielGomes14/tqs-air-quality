@@ -19,7 +19,6 @@ import org.apache.logging.log4j.Logger;
 
 @RestController
 @RequestMapping("api/v1/")
-@CrossOrigin(origins = "*")
 public class AirQualityController {
 
     @Autowired

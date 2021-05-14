@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import tqs.airquality.models.AirQualityData;
 import tqs.airquality.models.AirQualityDataForecast;
 import tqs.airquality.models.Cache;
-import tqs.airquality.models.Particles;
+import tqs.airquality.models.Metrics;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -80,12 +80,12 @@ public class WeatherBitAPIService {
             // the forecast is over 2 days, with 1 hour ahead, therefore, lets just
             // just skip it, until we got only 1 metric per day, as it is enough
             // therefore a total of 3 days counting with the current one
-            List<Particles> particlesList = new ArrayList<>();
+            List<Metrics> metricsList = new ArrayList<>();
             for(int i = 0; i<= 2 ; i++) {
-                particlesList.add(forecast.getData().get(0));
+                metricsList.add(forecast.getData().get(0));
                 forecast.setData(forecast.getData().stream().skip(24).collect(Collectors.toList()));
             }
-            forecast.setData(particlesList);
+            forecast.setData(metricsList);
             data = Optional.of(forecast);
         }
         catch (NullPointerException e){

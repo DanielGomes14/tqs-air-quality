@@ -1,6 +1,8 @@
 package tqs.airquality.utils;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tqs.airquality.models.City;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSVHelper {
+    private static final Logger logger = LogManager.getLogger(CSVHelper.class);
 
 
     public  List<City> readCSVDataToArray(String fileName){
@@ -35,7 +38,7 @@ public class CSVHelper {
             }
             return citiesdata;
         } catch( IOException e) {
-                e.printStackTrace();
+            logger.warn("Could not Parse Cities List");
         }
         return citiesdata;
 

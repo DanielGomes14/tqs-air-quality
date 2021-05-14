@@ -62,24 +62,23 @@ function QualityResults(props){
         <Typography
             variant={"overline"}
             color= "primary"
-            gutterBottom
             display="block"
             align = 'center'
         >
         Location: {props.data.lat},{props.data.lon}
         </Typography>
-        <Typography
-            variant={"overline"}
-            color= "primary"
-            gutterBottom
-            display="block"
-            align = 'center'
-        >
-        AirQualityIndex: {props.data.aqi}
-        </Typography>
         
         {props.data.data.map((it,index) => (
             <div>
+            <Typography
+                variant={"overline"}
+                color= "primary"
+                gutterBottom
+                display="block"
+                align = 'center'
+            >
+            Air Quality Index: {it.aqi}
+        </Typography>
                 <Row>
                     <Col md="12">
                     <Typography variant="h6" gutterBottom display="block" align = 'center' color="primary">

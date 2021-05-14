@@ -14,6 +14,6 @@ public class AirQualityData {
     private String city_name;
     private String country_code;
     private String state_code;
-    private Particles[] data;
+    private Metrics[] data;
 
 }
